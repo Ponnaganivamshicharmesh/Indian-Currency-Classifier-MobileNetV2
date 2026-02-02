@@ -1,21 +1,23 @@
-MIT License
+MIT License (Academic View-Only)
 
 Copyright (c) 2026 Charmesh
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+Permission is hereby granted for ACADEMIC/NON-COMMERCIAL VIEWING ONLY:
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+PERMITTED:
+- View source code for educational purposes
+- Cite in academic papers/portfolios/resumes
+- Screenshot results and metrics for presentation
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+CONDITIONS & RESTRICTIONS:
+1. No forking, downloading, or copying of this repository
+2. No replication of model/dataset/training pipeline
+3. No commercial use or redistribution
+4. No modification for competing projects
+5. Original copyright notice must be included in citations
+
+The above copyright notice and restrictions must be included in all academic citations.
+
+THE SOFTWARE IS PROVIDED "AS IS" FOR VIEWING PURPOSES ONLY, WITHOUT WARRANTY OF ANY KIND.
+
+For collaboration or commercial licensing: charmeshponnagani@gmail.com
