@@ -1,120 +1,102 @@
-Indian Currency Classifier (MobileNetV2)
-91.0% Validation Accuracy → 91.8% TTA | 10 Classes (New/Old) | TFLite 4MB | IEEE Research
+Indian Currency Classifier: MobileNetV2 with Test-Time Augmentation
+This repository contains a complete deep learning pipeline for the automatic recognition of Indian currency denominations. The system uses a MobileNetV2 classifier with a transfer learning approach to identify 7 distinct Indian currency classes, trained on a dataset of approximately 6,000 images.
 
-[
-[
-[
+The trained network is exported to a 2.7MB TensorFlow Lite format for offline mobile deployment. You can integrate this model directly into Android applications for ATMs, cash counters, and assistive tools designed to help visually impaired users with independent money handling.
 
-🎯 Key Results (400 Validation Images)
-Metric	Value
-Validation Accuracy	91.0% (364/400)
-Test-Time Augmentation	91.8% (+0.8%)
-Macro F1-Score	0.91
-Perfect Classes	2/10 (INDIA10NEW, INDIA20: 100%)
-Model Size	4.3MB TFLite
-Inference Speed	15ms/image
-Top Performing Classes
-text
-INDIA10NEW:   100% (40/40)
-INDIA20:      100% (40/40) ⭐
-INDIA50NEW:   97.0% (39/40)
-INDIA2000:    97.0% (39/40)
-INDIA50OLD:   97.0% (39/40)
-Overall:     **91.0%**
-📊 Confusion Matrix
-🎮 TTA Demo (Single vs Ensemble)
-🚀 Quickstart (Colab GPU - 3 Hours)
-Click Colab badge above → GPU Runtime
+Key Results
+The model was evaluated after training on the 6,000-image dataset containing varied capture conditions (lighting, angles, background noise, and note wear).
 
-Mount Google Drive → Auto-loads dataset
+Validation Accuracy: 94.0%
 
-Run All cells → Generates:
+Dataset Size: ~6,000 images
 
-currency_classifier.tflite (production model)
+Number of Classes: 7 (₹10, ₹20, ₹50, ₹100, ₹200, ₹500, ₹2000)
 
-Confusion matrix & demos
+Model Size: 2.7MB TFLite
 
-91.8% TTA evaluation
+Class-Wise Performance (F1-Score)
+₹200: 0.99
 
-📱 Android/iOS Deployment Ready
+₹2000: 0.98
+
+₹500: 0.96
+
+₹50: 0.91
+
+₹100: 0.94
+
+₹20: 0.94
+
+₹10: 0.91
+
+Android App Integration
+You can deploy this model into a Kotlin-based Android application. The recommended implementation uses the CameraX API to handle image capture efficiently.
+
+Do not run continuous frame-by-frame inference. You should configure the app to capture and analyze one frame at set intervals. This single-frame approach prevents device overheating and reduces battery usage. The lightweight 2.7MB TFLite file ensures the app works completely offline without network latency.
+
 kotlin
-// Load TFLite model (4MB)
+// Load the 2.7MB TFLite model
 val interpreter = InterpreterFactory().create(
     loadModelFile("currency_classifier.tflite"), 
     Interpreter.Options()
 )
 
-// Single inference: 15ms
+// Run inference on captured frame
 val result = interpreter.run(cameraImage)
-textView.text = "${result.className} (${result.confidence*100}%)"
+textView.text = "${result.className} (${result.confidence * 100}%)"
+Technical Architecture
+The architecture relies on MobileNetV2 pre-trained on ImageNet. The original top classification layers were removed, and custom dense layers were added to map the extracted features to the 7 output classes.
 
-// Optional TTA (60ms): +0.8% accuracy boost
-Files ready:
+Network Flow:
+Input Image -> Resize (224x224) & Normalize -> MobileNetV2 Base -> Custom Dense Layers -> Softmax(7)
 
-currency_classifier.tflite ← Download
+Training & Optimization:
 
-class_names.txt ← 10 denominations
+Optimizer: Adam
 
-🏗️ Technical Architecture
-text
-Input (224x224) → MobileNetV2 (ImageNet)
-    ↓ Frozen Base + Fine-tune Top 30 Layers
-GlobalAvgPool → Dropout(0.35) → Dense(128) → Softmax(10)
+Loss Function: Categorical Cross-Entropy
 
-Training:
-├── Phase 1: Frozen base (Adam 1e-4)
-├── Phase 2: Top 30 layers (Adam 1e-5)
-├── Augmentation: Rotation/Flip/Brightness
-└── EarlyStopping(val_acc, patience=8)
-Hyperparameters:
+Data Augmentation: Rotation, zoom, shift, and flip variations to simulate real-world input changes.
 
-text
-Batch Size: 16 | Epochs: 50+30 | Dropout: 0.35
-Optimizer: Adam | Loss: Categorical Cross-Entropy
-🔬 Research Contributions
-10-class new/old variants (harder than prior 7-class papers)
+Test-Time Augmentation (TTA): Applied to improve prediction stability in uncertain cases, pushing borderline confidence scores from ~87% to over 95%.
 
-91.8% TTA beats 85-89% published baselines
+Quickstart Guide
+You can reproduce the training pipeline using Google Colab.
 
-Hybrid inference: 15ms single / 60ms TTA (confidence-based)
+Open Indian_Currency_Colab.ipynb in Google Colab and enable the GPU runtime.
 
-Mobile-first design: 4MB TFLite deployment
+Mount your Google Drive to load the 6,000-image dataset.
 
-Comprehensive evaluation: Per-class analysis + failure cases
+Run all cells to train the model and generate the evaluation files.
 
-📂 Repository Structure
+Download the resulting currency_classifier.tflite file for your mobile project.
+
+Repository Structure
 text
 Indian-Currency-Classifier-MobileNetV2/
-├── Indian_Currency_Colab.ipynb      # Complete pipeline
-├── currency_classifier.tflite       # Production model ⭐
-├── class_names.txt                 # ['INDIA10NEW', ...]
-├── LICENSE                         # Academic view-only
+├── Indian_Currency_Colab.ipynb      # Complete training pipeline
+├── currency_classifier.tflite       # Production-ready 2.7MB model
+├── class_names.txt                  # List of 7 denomination classes
+├── LICENSE                          # Academic view-only license
 ├── .gitignore
 └── screenshots/
+    ├── currency_classifier_workflow_v2.png
     ├── confusion_matrix.png
-    ├── tta_demo.png
     └── demo.png
+Academic Citation
+If you use this project in your research, please cite it using the following format:
 
-📚 Academic Citation
 text
 @misc{charmesh2026indian,
   title = {Indian Currency Classifier: MobileNetV2 with Test-Time Augmentation},
-  author = {Charmesh},
+  author = {Ponnagani, Vamshi Charmesh},
   year = {2026},
-  month = {Feb},
+  month = {April},
   publisher = {GitHub},
-  howpublished = {\\url{https://github.com/charmesh/Indian-Currency-Classifier-MobileNetV2}},
-  note = {91.0\\% validation accuracy, 91.8\\% TTA}
-  
+  howpublished = {\url{https://github.com/charmesh/Indian-Currency-Classifier-MobileNetV2}},
+  note = {94.0\% validation accuracy, 6000 images, 7 classes}
 }
-🔗 Related Work & Benchmarks
-Method	Classes	Accuracy	Mobile
-Ours	10	91.8%	✅
-CNN	7	92%	❌
-MobileNet	Fake	85%	✅
-References:
-C. Ponnagani, "Indian Currency Classifier: MobileNetV2 with Test-Time Augmentation,"
-GitHub, Feb. 2026. [Online]. Available: https://github.com/charmesh/Indian-Currency-Classifier-MobileNetV2
-
-Charmesh | Ludhiana, Punjab | charmeshponnagani@gmail.com
-Developed: Feb 2026 | 91.8% SOTA Currency Classification
+Developer: Ponnagani Vamshi Charmesh
+Registration Number: 12201384
+Location: Lovely Professional University, Punjab
+Contact: charmeshponnagani@gmail.com
